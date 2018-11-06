@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.arthur.mapper.TravelMapper">
+  <resultMap id="BaseResultMap" type="com.arthur.pojo.Travel">
+    <result column="id" jdbcType="BIGINT" property="id" />
+    <result column="uid" jdbcType="BIGINT" property="uid" />
+    <result column="type_" jdbcType="VARCHAR" property="type_" />
+    <result column="departure_" jdbcType="VARCHAR" property="departure_" />
+    <result column="arrival_" jdbcType="VARCHAR" property="arrival_" />
+    <result column="publish_time_" jdbcType="VARCHAR" property="publish_time_" />
+    <result column="travel_time_" jdbcType="TIMESTAMP" property="travel_time_" />
+    <result column="addition_" jdbcType="VARCHAR" property="addition_" />
+    <association property="user" javaType="com.arthur.pojo.User">
+      <id column="id" property="id"/>
+      <result column="phone_" jdbcType="VARCHAR" property="phone_"/>
+      <result column="name_" jdbcType="VARCHAR" property="name_"/>
+      <result column="sex_" jdbcType="VARCHAR" property="sex_"/>
+    </association>
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, uid, type_, departure_, arrival_, travel_time_, addition_, publish_time_
+  </sql>
+  <select id="selectByExample" parameterType="com.arthur.pojo.TravelExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'false' as QUERYID,
+    <include refid="Base_Column_List" />
+    from _travel
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.arthur.pojo.Travel" useGeneratedKeys="true">
+    insert into _travel (uid, type_, departure_, arrival_, travel_time_, addition_, publish_time_)
+    values (#{uid,jdbcType=BIGINT}, #{type_,jdbcType=VARCHAR}, #{departure_,jdbcType=VARCHAR},
+      #{arrival_,jdbcType=VARCHAR}, #{travel_time_,jdbcType=TIMESTAMP}, #{addition_,jdbcType=VARCHAR}, #{publish_time_,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.arthur.pojo.Travel" useGeneratedKeys="true">
+    insert into _travel
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="uid != null">
+        uid,
+      </if>
+      <if test="type_ != null">
+        type_,
+      </if>
+      <if test="departure_ != null">
+        departure_,
+      </if>
+      <if test="arrival_ != null">
+        arrival_,
+      </if>
+      <if test="travel_time_ != null">
+        travel_time_,
+      </if>
+      <if test="addition_ != null">
+        addition_,
+      </if>
+      <if test="publish_time_ != null">
+        publish_time_,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="uid != null">
+        #{uid,jdbcType=BIGINT},
+      </if>
+      <if test="type_ != null">
+        #{type_,jdbcType=VARCHAR},
+      </if>
+      <if test="departure_ != null">
+        #{departure_,jdbcType=VARCHAR},
+      </if>
+      <if test="arrival_ != null">
+        #{arrival_,jdbcType=VARCHAR},
+      </if>
+      <if test="travel_time_ != null">
+        #{travel_time_,jdbcType=TIMESTAMP},
+      </if>
+      <if test="addition_ != null">
+        #{addition_,jdbcType=VARCHAR},
+      </if>
+      <if test="publish_time_ != null">
+        #{publish_time_,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <select id="queryWithKey" resultMap="BaseResultMap">
+    SELECT t.*, u.id, u.sex_, u.phone_, u.name_
+    FROM _travel t
+    left JOIN _user u
+    on t.uid = u.id
+    <where>
+      <trim>
+        <if test="departure_!=null">
+          AND locate(#{departure_},departure_) > 0
+        </if>
+        <if test="arrival_!=null">
+          AND locate(#{arrival_},concat(arrival_,addition_)) > 0
+        </if>
+        <if test="type_!=null">
+          AND #{type_} = type_
+        </if>
+      </trim>
+    </where>
+    ORDER BY t.id desc
+    limit #{offset}, #{length}
+  </select>
+
+  <delete id="deleteById" parameterType="long" >
+    DELETE FROM _travel
+    WHERE id = #{id}
+  </delete>
+
+  <select id="countResult" resultType="int">
+    SELECT COUNT(*)
+    FROM _travel
+    <where>
+      <if test="departure_ != null">
+        AND locate(#{departure_},departure_) > 0
+      </if>
+      <if test="arrival_ != null">
+        AND locate(#{arrival_},concat(arrival_,addition_)) > 0
+      </if>
+      <if test="type_ != null">
+        AND type_ = #{type_}
+      </if>
+    </where>
+  </select>
+  <delete id="doQuartzMission">
+    DELETE FROM _travel
+    WHERE travel_time_ &lt; #{today}
+  </delete>
+
+</mapper>

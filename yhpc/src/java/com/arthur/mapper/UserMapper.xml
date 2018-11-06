@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.arthur.mapper.UserMapper">
+  <resultMap id="BaseResultMap" type="com.arthur.pojo.User">
+    <result column="id" jdbcType="BIGINT" property="id" />
+    <result column="phone_" jdbcType="VARCHAR" property="phone_" />
+    <result column="name_" jdbcType="VARCHAR" property="name_" />
+    <result column="sex_" jdbcType="VARCHAR" property="sex_" />
+    <result column="password_" jdbcType="VARCHAR" property="password_" />
+    <result column="salt_" jdbcType="VARCHAR" property="salt_" />
+    <result column="validate_code_" jdbcType="VARCHAR" property="validate_code_"/>
+  </resultMap>
+  <resultMap id="TravelInfoMap" type="com.arthur.pojo.Travel">
+    <result column="id" jdbcType="BIGINT" property="id" />
+    <result column="uid" jdbcType="BIGINT" property="uid" />
+    <result column="type_" jdbcType="VARCHAR" property="type_" />
+    <result column="departure_" jdbcType="VARCHAR" property="departure_" />
+    <result column="arrival_" jdbcType="VARCHAR" property="arrival_" />
+    <result column="travel_time_" jdbcType="TIMESTAMP" property="travel_time_" />
+    <result column="addition_" jdbcType="VARCHAR" property="addition_" />
+    <result column="publish_time_" jdbcType="VARCHAR" property="publish_time_" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, phone_, name_, sex_, password_, salt_, validate_code_
+  </sql>
+  <select id="selectByExample" parameterType="com.arthur.pojo.UserExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'false' as QUERYID,
+    <include refid="Base_Column_List" />
+    from _user
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.arthur.pojo.User" useGeneratedKeys="true">
+    insert into _user (phone_, name_, sex_,
+      password_, salt_)
+    values (#{phone_,jdbcType=VARCHAR}, #{name_,jdbcType=VARCHAR}, #{sex_,jdbcType=VARCHAR}, 
+      #{password_,jdbcType=VARCHAR}, #{salt_,jdbcType=VARCHAR}), #{validate_code_,jdbcType=VARCHAR}
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.arthur.pojo.User" useGeneratedKeys="true">
+    insert into _user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="phone_ != null">
+        phone_,
+      </if>
+      <if test="name_ != null">
+        name_,
+      </if>
+      <if test="sex_ != null">
+        sex_,
+      </if>
+      <if test="password_ != null">
+        password_,
+      </if>
+      <if test="salt_ != null">
+        salt_,
+      </if>
+      <if test="validate_code_!=null">
+        validate_code_,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="phone_ != null">
+        #{phone_,jdbcType=VARCHAR},
+      </if>
+      <if test="name_ != null">
+        #{name_,jdbcType=VARCHAR},
+      </if>
+      <if test="sex_ != null">
+        #{sex_,jdbcType=VARCHAR},
+      </if>
+      <if test="password_ != null">
+        #{password_,jdbcType=VARCHAR},
+      </if>
+      <if test="salt_ != null">
+        #{salt_,jdbcType=VARCHAR},
+      </if>
+      <if test="validate_code_ != null">
+        #{validate_code_,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <select id="getUser" parameterType="String" resultMap="BaseResultMap">
+    SELECT
+      *
+    FROM _user
+    where
+      phone_ = #{phoneNumber}
+  </select>
+  <delete id="deleteByPhoneNumber" parameterType="String">
+    DELETE
+    FROM
+      _user
+    WHERE
+      phone_ = #{phoneNumber}
+  </delete>
+  <update id="update" parameterType="com.arthur.pojo.User">
+    UPDATE
+     _user
+    set
+    <trim suffixOverrides=",">
+      <if test="name_ != null">
+        name_ = #{name_},
+      </if>
+      <if test="sex_ != null">
+        sex_ = #{sex_},
+      </if>
+      <if test="password_ != null">
+        password_ = #{password_},
+      </if>
+      <if test="phone_ != null">
+        phone_ = #{phone_},
+      </if>
+      <if test="validate_code_ != null">
+        validate_code_ = #{validate_code_},
+      </if>
+      <if test="salt_ !=null">
+        salt_ = #{salt_},
+      </if>
+    </trim>
+    WHERE
+      phone_ = #{phone_}
+  </update>
+  <select id="selectTravelInfo" resultMap="TravelInfoMap">
+    SELECT
+      *
+    FROM
+      _travel
+    WHERE
+      uid = #{uid} limit #{offset},#{limit}
+  </select>
+
+  <update id="updateValidateCode">
+    UPDATE  _user SET
+    <trim suffixOverrides=",">
+      validate_code_ = #{validate_code_}
+    </trim>
+    WHERE id = #{user.id}
+  </update>
+  
+  <select id="getUsername" resultType="String">
+    SELECT u.name_ FROM _user u where u.phone_ = #{phoneNumber}
+  </select>
+</mapper>

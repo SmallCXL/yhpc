@@ -1,0 +1,118 @@
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd">
+
+    <diskStore path="${webapp.root}"/>
+    <cacheManagerPeerProviderFactory
+            class="net.sf.ehcache.distribution.RMICacheManagerPeerProviderFactory"
+            properties="peerDiscovery=automatic, multicastGroupAddress=230.0.0.1,
+                        multicastGroupPort=4446, timeToLive=32"/>
+    <cacheManagerPeerListenerFactory class="net.sf.ehcache.distribution.RMICacheManagerPeerListenerFactory"
+                                      properties="hostName=127.0.0.1,port=40000,socketTimeoutMillis=600000"/>
+    <!-- 默认缓存配置 -->
+    <defaultCache
+            maxEntriesLocalHeap="100"
+            eternal="false"
+            timeToIdleSeconds="60"
+            timeToLiveSeconds="180"
+            overflowToDisk="true"
+            maxEntriesLocalDisk="100000"/>
+
+    <!-- 数据库请求缓存，20分钟过期 -->
+    <!--
+    replicatePuts=true | false - whether new elements placed in a cache are replicated to others. Defaults to true.
+    replicateUpdates=true | false - whether new elements which override an element already existing with the same key are replicated. Defaults to true.
+    replicateRemovals=true - whether element removals are replicated. Defaults to true.
+
+    重点关注是否异步这个设置，在某些特定的缓存，例如shiro-activeSessionCache的缓存中，必须设置为false，即同步模式
+    replicateAsynchronously=true | false - whether replications are asyncrhonous (true) or synchronous (false). Defaults to true.
+    replicateUpdatesViaCopy=true | false - whether the new elements are copied to other caches (true), or whether a remove message is sent. Defaults to true.
+    -->
+    <cache name="webCache"
+           maxElementsInMemory="10000"
+           eternal="false"
+           timeToIdleSeconds="120"
+           timeToLiveSeconds="240"
+           maxElementsOnDisk="10000"
+           diskExpiryThreadIntervalSeconds="120"
+           memoryStoreEvictionPolicy="LRU">
+        <cacheEventListenerFactory class="net.sf.ehcache.distribution.RMICacheReplicatorFactory" properties="replicateAsynchronously=false"/>
+        <bootstrapCacheLoaderFactory class="net.sf.ehcache.distribution.RMIBootstrapCacheLoaderFactory"/>
+    </cache>
+    <cache name="authenticationCache"
+           maxElementsInMemory="10000"
+           eternal="false"
+           timeToIdleSeconds="120"
+           timeToLiveSeconds="240"
+           maxElementsOnDisk="10000"
+           diskExpiryThreadIntervalSeconds="120"
+           memoryStoreEvictionPolicy="LRU">
+        <cacheEventListenerFactory class="net.sf.ehcache.distribution.RMICacheReplicatorFactory" properties="replicateAsynchronously=false"/>
+        <bootstrapCacheLoaderFactory class="net.sf.ehcache.distribution.RMIBootstrapCacheLoaderFactory"/>
+    </cache>
+    <cache name="shiro-activeSessionCache"
+           maxElementsInMemory="10000"
+           eternal="false"
+           timeToIdleSeconds="600"
+           timeToLiveSeconds="1200"
+           maxElementsOnDisk="10000"
+           diskExpiryThreadIntervalSeconds="120"
+           memoryStoreEvictionPolicy="LRU">
+        <cacheEventListenerFactory class="net.sf.ehcache.distribution.RMICacheReplicatorFactory" properties="replicateAsynchronously=false"/>
+        <bootstrapCacheLoaderFactory class="net.sf.ehcache.distribution.RMIBootstrapCacheLoaderFactory"/>
+    </cache>
+    <!-- 登陆次数缓存，2分钟过期 -->
+    <cache name="loginRetryCache"
+           maxElementsInMemory="10000"
+           eternal="false"
+           timeToIdleSeconds="120"
+           timeToLiveSeconds="121"
+           overflowToDisk="false"
+           memoryStoreEvictionPolicy="LRU">
+        <cacheEventListenerFactory class="net.sf.ehcache.distribution.RMICacheReplicatorFactory" properties="replicateAsynchronously=false"/>
+        <bootstrapCacheLoaderFactory class="net.sf.ehcache.distribution.RMIBootstrapCacheLoaderFactory"/>
+    </cache>
+
+    <cache  name="standard"
+            maxElementsInMemory="10000"
+            eternal="true"
+            maxElementsOnDisk="10000"
+            diskExpiryThreadIntervalSeconds="120"
+            memoryStoreEvictionPolicy="LRU">
+        <persistence strategy="localTempSwap"/>
+    </cache>
+
+
+    <!--默认缓存配置，以下属性是必须的：
+            name ：cache的标识符，在一个CacheManager中必须唯一。
+            maxElementsInMemory ： 在内存中缓存的element的最大数目。
+            maxElementsOnDisk ： 在磁盘上缓存的element的最大数目。
+            eternal ： 设定缓存的elements是否有有效期。如果为true，timeouts属性被忽略。
+            overflowToDisk ： 设定当内存缓存溢出的时候是否将过期的element缓存到磁盘上。
+            以下属性是可选的：
+            timeToIdleSeconds ： 缓存element在过期前的空闲时间。
+            timeToLiveSeconds ： 缓存element的有效生命期。
+            diskPersistent ： 在VM重启的时候是否持久化磁盘缓存，默认是false。
+            diskExpiryThreadIntervalSeconds ： 磁盘缓存的清理线程运行间隔，默认是120秒.
+            memoryStoreEvictionPolicy ： 当内存缓存达到最大，有新的element加入的时候，
+            移除缓存中element的策略。默认是LRU，可选的有LFU和FIFO
+            缓存子元素：
+            cacheEventListenerFactory：注册相应的的缓存监听类，用于处理缓存事件，如put,remove,update,和expire
+            bootstrapCacheLoaderFactory:指定相应的BootstrapCacheLoader，用于在初始化缓存，以及自动设置。
+    -->
+
+    <!--
+        LRU:LRU是Least Recently Used 的缩写 LRU缓存把最近最少使用的数据移除，让给最新读取的数据。而往往最常读取的，也是读取次数最多的，所以，利用LRU缓存，我们能够提高系统的performance(性能)
+        LFU是最近最不常用页面置换算法(Least Frequently Used),也就是淘汰一定时期内被访问次数最少的页!
+        FIFO(First In First Out ，先进先出)
+      算法是根据先进先出原理来淘汰数据的，实现上是最简单的一种,具体算法如下：
+      1. 新访问的数据插入FIFO队列尾部，数据在FIFO队列中顺序移动；
+      2. 淘汰FIFO队列头部的数据；
+     -->
+    <!--
+    timeToIdleSeconds=60
+    timeToLiveSeconds=180
+        则一个数据被添加进缓存后，该数据能够在缓存中存活的最长时间为180秒(timeToLiveSeconds)，
+        而在180秒内，假设不止一次去缓存中拿取该数据，那么相邻2次获取数据的时间间隔如果小于60秒(timeToIdleSeconds)，
+        则能成功获取到数据，但如果最近一次获取到下一次获取的时间间隔超过60秒，那么，将得到null，因为此时该数据已经被移出缓存了。
+    -->
+</ehcache>

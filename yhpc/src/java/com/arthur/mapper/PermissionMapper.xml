@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.arthur.mapper.PermissionMapper">
+  <resultMap id="BaseResultMap" type="com.arthur.pojo.Permission">
+    <result column="id" jdbcType="BIGINT" property="id" />
+    <result column="name_" jdbcType="VARCHAR" property="name_" />
+    <result column="desc_" jdbcType="VARCHAR" property="desc_" />
+    <result column="url_" jdbcType="VARCHAR" property="url_" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, name_, desc_, url_
+  </sql>
+  <select id="selectByExample" parameterType="com.arthur.pojo.PermissionExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'false' as QUERYID,
+    <include refid="Base_Column_List" />
+    from _permission
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.arthur.pojo.Permission" useGeneratedKeys="true">
+    insert into _permission (name_, desc_, url_
+      )
+    values (#{name_,jdbcType=VARCHAR}, #{desc_,jdbcType=VARCHAR}, #{url_,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.arthur.pojo.Permission" useGeneratedKeys="true">
+    insert into _permission
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="name_ != null">
+        name_,
+      </if>
+      <if test="desc_ != null">
+        desc_,
+      </if>
+      <if test="url_ != null">
+        url_,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="name_ != null">
+        #{name_,jdbcType=VARCHAR},
+      </if>
+      <if test="desc_ != null">
+        #{desc_,jdbcType=VARCHAR},
+      </if>
+      <if test="url_ != null">
+        #{url_,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="getByPrimaryKey" resultMap="BaseResultMap">
+    SELECT *
+    FROM _permission
+    where id = #{id}
+  </select>
+</mapper>

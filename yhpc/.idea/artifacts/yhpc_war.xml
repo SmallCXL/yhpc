@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="yhpc:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="yhpc.war">
+      <element id="artifact" artifact-name="yhpc:war exploded" />
+    </root>
+  </artifact>
+</component>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:cache="http://www.springframework.org/schema/cache"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd">
+    <!--以下配置myBatis-->
+    <context:annotation-config />
+    <!--定位配置文件-->
+    <context:property-placeholder location="classpath:resources/jdbc.properties" ignore-unresolvable="true"/>
+    <!--数据库连接池-->
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <!--配置jdbc连接属性-->
+        <property name="driverClass" value="${jdbc.driver}"/>
+        <property name="user" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+        <property name="jdbcUrl" value="${jdbc.url}"/>
+        <!--配置c3p0数据库连接池-->
+        <property name="maxPoolSize" value="100"/>
+        <property name="minPoolSize" value="3"/>
+        <property name="autoCommitOnClose" value="false"/>
+        <property name="checkoutTimeout" value="10000"/>
+        <property name="acquireRetryAttempts" value="2"/>
+    </bean>
+    <!--配置sqlSessionFactory-->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="configLocation" value="classpath:resources/mybatis-config.xml"/>
+        <property name="typeAliasesPackage" value="com.arthur.pojo"/>
+        <property name="mapperLocations" value="classpath:com/arthur/mapper/*.xml"/>
+    </bean>
+    <!--扫描dao接口包，动态实现DAO接口-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+        <property name="basePackage" value="com.arthur.mapper"/>
+    </bean>
+
+
+</beans>
