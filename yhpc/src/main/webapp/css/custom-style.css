@@ -104,7 +104,7 @@ body{
 .item-orange .addition{
     height:45px;
     line-height:20px;
-    overflow: scroll;
+    overflow: hidden;
     border-top:solid 1px var(--c_orange);
     padding-top:5px;
 }
@@ -112,14 +112,14 @@ body{
 .item-green .addition{
     height:45px;
     line-height:20px;
-    overflow: scroll;
+    overflow: hidden;
     border-top:solid 1px var(--c_green);
     padding-top:5px;
 }
 .info-title{
     height:20px;
     line-height:20px;
-    overflow:scroll;
+    overflow:hidden;
 }
 .item-orange{
     border-left: 7px solid var(--c_orange);

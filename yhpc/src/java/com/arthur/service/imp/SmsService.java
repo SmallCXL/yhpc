@@ -71,7 +71,7 @@ public class SmsService {
         request.setOutId("yourOutId");
 
         //hint 此处为正式发送短信代码，可能会抛出异常，注意catch
-//        SendSmsResponse sendSmsResponse = acsClient.getAcsResponse(request);
+        SendSmsResponse sendSmsResponse = acsClient.getAcsResponse(request);
 
 //      此处可以处理一下sendSmsResponse的详细内容，返回值告知短信是否发送成功。
 //        return sendSmsResponse;

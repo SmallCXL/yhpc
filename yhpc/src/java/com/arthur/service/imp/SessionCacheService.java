@@ -17,7 +17,7 @@ import java.util.Set;
 public class SessionCacheService<K, V> implements Cache<K, V> {
     private EhCacheManager cacheManager;
     private Cache<K,V> cache = null;
-
+    private final static String ShiroActiveSessionCacheName = "shiro-activeSessionCache";
     @Autowired
     public SessionCacheService(EhCacheManager cacheManager) {
         this.cacheManager = cacheManager;
@@ -26,7 +26,7 @@ public class SessionCacheService<K, V> implements Cache<K, V> {
     public Cache<K,V> getCache() {
         try {
             if (cache == null) {
-                cache = cacheManager.getCache("shiro-activeSessionCache");
+                cache = cacheManager.getCache(ShiroActiveSessionCacheName);
             }
         } catch (Exception e) {
             e.printStackTrace();

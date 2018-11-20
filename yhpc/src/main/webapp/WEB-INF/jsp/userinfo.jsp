@@ -153,7 +153,7 @@
                             $(function () {
                                 $('#delete${travel_content.id}').click(function () {
                                     $.ajax({
-                                        url:'./delete',
+                                        url:'./deleteTravel',
                                         type:'post',
                                         dataType:'json',
                                         data:{"id":"${travel_content.id}"},

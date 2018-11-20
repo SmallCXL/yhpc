@@ -1,6 +1,8 @@
 package com.arthur.web;
 
 import com.arthur.pojo.ResponseEntity;
+import com.arthur.pojo.Travel;
+import com.arthur.service.imp.SearchService;
 import com.arthur.service.intf.TravelService;
 import com.arthur.service.intf.UserService;
 import com.arthur.utils.AjaxResult;
@@ -14,20 +16,30 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @Controller
 public class PageController {
     private UserService userService;
     private TravelService travelService;
+    private SearchService searchService;
 
     @Autowired
-    public PageController(UserService userService,TravelService travelService) {
+    public PageController(UserService userService,TravelService travelService,SearchService searchService) {
         this.userService = userService;
         this.travelService = travelService;
+        this.searchService = searchService;
     }
 
     @RequestMapping(value = "/index", method = RequestMethod.GET)
-    public String index() {
+    public String index(HttpServletRequest request, HttpSession session) {
+        List<Travel> list = (List<Travel>) session.getAttribute("travel_info_list");
+        if (list == null) {
+            session.setAttribute("departure", null);
+            session.setAttribute("arrival", null);
+            session.setAttribute("type", null);
+            searchService.searchDepartureAndArrival(request);
+        }
         return "index";
     }
 
@@ -85,7 +97,7 @@ public class PageController {
         return ResponseEntity.ok();
     }
 
-    @RequestMapping(value = "/delete", method = RequestMethod.POST)
+    @RequestMapping(value = "/deleteTravel", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity deleteTravelInfo(HttpServletRequest request) {
         AjaxResult ajaxResult = travelService.deleteTravelInfo(request);

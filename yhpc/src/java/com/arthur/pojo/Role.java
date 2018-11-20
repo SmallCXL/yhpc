@@ -3,6 +3,8 @@ package com.arthur.pojo;
 public class Role {
     public static final long USER = 1;
     public static final long ADMIN = 2;
+//    public static final long ADMIN = 1000;
+//    public static final long USER = 2000;
 
     private Long id;
 

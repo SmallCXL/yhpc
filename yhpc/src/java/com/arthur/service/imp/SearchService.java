@@ -11,6 +11,7 @@ import java.util.List;
 
 @Service
 public class SearchService {
+    private static final int ROWS_PER_PAGE = 10;
     private TravelMapper travelMapper;
     @Autowired
     public SearchService(TravelMapper travelMapper){
@@ -33,8 +34,6 @@ public class SearchService {
         String arrival = ((String) session.getAttribute("arrival"));
         String type = ((String) session.getAttribute("type"));
 
-        int rowsPerPage = ((int) session.getServletContext().getAttribute("rowsPerPage"));
-
         //检查是否已经存有本次搜索结果的总行数
         int totalRows;
         Object rows = session.getAttribute("totalRows");
@@ -54,13 +53,13 @@ public class SearchService {
             currentPage = 1;
         }
         session.setAttribute("currentPage", currentPage);
-//        计算总页数
-        int totalPages = totalRows % rowsPerPage == 0 ? totalRows / rowsPerPage : totalRows / rowsPerPage + 1;
+        //计算总页数
+        int totalPages = totalRows % ROWS_PER_PAGE == 0 ? totalRows / ROWS_PER_PAGE : totalRows / ROWS_PER_PAGE + 1;
         session.setAttribute("totalPages", totalPages);
 
-        int offset = (currentPage - 1) * rowsPerPage;
+        int offset = (currentPage - 1) * ROWS_PER_PAGE;
 
-        List<Travel> list = search(departure, arrival, offset, rowsPerPage, type);
+        List<Travel> list = search(departure, arrival, offset, ROWS_PER_PAGE, type);
 
         session.setAttribute("travel_info_list",list);
     }
@@ -79,15 +78,14 @@ public class SearchService {
             arrival = arrival.trim();
         }
 
-        int rowsPerPage = ((int) session.getServletContext().getAttribute("rowsPerPage"));
         int searchResultRows = getResultRows(departure, arrival, type);
-        int totalPages = searchResultRows % rowsPerPage == 0 ? searchResultRows / rowsPerPage : searchResultRows / rowsPerPage + 1;
+        int totalPages = searchResultRows % ROWS_PER_PAGE == 0 ? searchResultRows / ROWS_PER_PAGE : searchResultRows / ROWS_PER_PAGE + 1;
 
         session.setAttribute("currentPage",1);//每次提交搜索后，定位在第一页
         session.setAttribute("totalRows",searchResultRows);
         session.setAttribute("totalPages",totalPages);
 
-        List<Travel> list = search(departure, arrival, 0, rowsPerPage, type);
+        List<Travel> list = search(departure, arrival, 0, ROWS_PER_PAGE, type);
         session.setAttribute("travel_info_list", list);
 
         //若搜索结果为空，则将表单信息清空，防止返回时自动填写，造成BUG

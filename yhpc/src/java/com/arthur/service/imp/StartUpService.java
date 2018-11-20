@@ -32,15 +32,6 @@ public class StartUpService implements InitializingBean, ServletContextAware, Se
 
     @Override
     public void setServletContext(ServletContext servletContext) {
-        //预装载数据
-        int rowsPerPage = 10;
-        List<Travel> list = travelMapper.queryWithKey(null,null,0,rowsPerPage,null);
-        int count = travelMapper.countResult(null,null,null);
-        int totalPages = count % rowsPerPage == 0 ? count / rowsPerPage : count / rowsPerPage + 1;
-        servletContext.setAttribute("travel_info_list",list);
-        servletContext.setAttribute("totalPages", totalPages);
-        servletContext.setAttribute("currentPage",1);
-        servletContext.setAttribute("rowsPerPage",rowsPerPage);
 
         //开启定时任务，每天凌晨4点执行清理过期信息任务
         try {

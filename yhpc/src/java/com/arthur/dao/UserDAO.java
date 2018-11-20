@@ -23,7 +23,7 @@ public class UserDAO {
     }
 
     //cache user:123456
-    @Cacheable(value = "webCache", key = "'user:'+#phoneNumber")
+    @Cacheable(value = "webCache", key = "'user:'+#phoneNumber", condition = "#phoneNumber != null")
     public User getUser(String phoneNumber) {
         System.out.println("loading user data from db...");
         return userMapper.getUser(phoneNumber);

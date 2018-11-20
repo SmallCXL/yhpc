@@ -36,7 +36,7 @@ public class TravelDAO {
 
     //读取操作，不需要每次执行方法体，只需读取缓存即可
     //cache   user:123456_travelList
-    @Cacheable(value = "webCache", key = "'user:'+#user.phone_+'_travelList'")
+    @Cacheable(value = "webCache", key = "'user:'+#user.phone_+'_travelList'", condition = "#user != null")
     public List<Travel> selectTravelListOfUser(User user) {
         TravelExample example = new TravelExample();
         example.createCriteria().andUidEqualTo(user.getId());

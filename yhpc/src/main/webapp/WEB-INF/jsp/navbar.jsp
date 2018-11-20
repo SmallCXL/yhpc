@@ -1,4 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" pageEncoding="UTF-8" %>
+<script>
+    $(window).scroll(function (e) {
+        $('#nav-bar').collapse("hide");
+    });
+</script>
 <nav class="navbar navbar-fixed-top navbar-black" id="header">
     <div class="container">
         <div class="navbar-header">
