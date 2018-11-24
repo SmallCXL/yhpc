@@ -150,15 +150,6 @@ public class UserServiceImp implements UserService {
         User user = userDAO.getUser(phoneNumber);
         String code;
 
-//        //检查原来的密码是否正确
-//        String passwordInDB = user.getPassword_();
-//        String salt = user.getSalt_();
-//        String encodedPassword = new SimpleHash("md5", oldPassword, salt, 2).toString();
-//
-//        if (!passwordInDB.equals(encodedPassword)) {
-//            return AjaxResult.PasswordIncorrect;
-//        }
-
         //尝试修改 限制验证码，并返回修改后的验证码，若出错则说明修改次数已达上限
         try {
             code = CheckValidateCodeUtils.tryToEditInfo(user.getValidate_code_());
@@ -168,7 +159,7 @@ public class UserServiceImp implements UserService {
 
         updateValidateCode(user, code);
         session.setAttribute("is_info_edited", 1);
-
+        session.setAttribute("username", userName);
         user.setValidate_code_(code);
         user.setName_(userName);
 

@@ -179,9 +179,9 @@
         <p>修改个人信息</p>
     </div>
 </div>
-<div class="container" >
+<div class="wrapper" >
     <div class="row row-offcanvas row-offcanvas-left" id="test">
-        <div class="col-xs-6 col-sm-4 col-md-3 sidebar-offcanvas">
+        <div class="col-xs-6 col-sm-3 col-sm-offset-1 sidebar-offcanvas">
             <div class="list-group text-center">
                 <a href="./userinfo" class="list-group-item">查看个人信息</a>
                 <a href="#" class="list-group-item active">修改个人信息</a>
@@ -191,9 +191,8 @@
         <p class="pull-left visible-xs">
             <button class="btn btn-orange-sm btn-xs" data-toggle="offcanvas">菜单</button>
         </p>
-        <div class="col-xs-12 col-sm-6 outter-container">
+        <div class="col-xs-12 col-sm-5 outter-container">
 
-            <div class="inner-container">
                 <div class="table-form">
                     <form id="userinfo-form">
                         <div class="row">
@@ -260,7 +259,6 @@
                         </div>
                     </form>
                 </div>
-            </div>
 
         </div>
 

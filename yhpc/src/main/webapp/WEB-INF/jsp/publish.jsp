@@ -162,9 +162,9 @@
         <p>发布拼车信息</p>
     </div>
 </div>
-<div class="container" >
+<div class="wrapper" >
     <div class="row row-offcanvas row-offcanvas-left">
-        <div class="col-xs-6 col-sm-4 col-md-3 sidebar-offcanvas">
+        <div class="col-xs-6 col-sm-3 col-sm-offset-1 sidebar-offcanvas">
             <div class="list-group text-center">
                 <a href="./userinfo" class="list-group-item">查看个人信息</a>
                 <a href="./editinfo" class="list-group-item">修改个人信息</a>
@@ -174,9 +174,8 @@
         <p class="pull-left visible-xs">
             <button class="btn btn-orange-sm btn-xs" data-toggle="offcanvas">菜单</button>
         </p>
-        <div class="col-xs-12 col-sm-8 col-md-9 outter-container">
+        <div class="col-xs-12 col-sm-6 outter-container">
 
-            <div class="inner-container">
                 <div class="table-form">
                     <form id="publish-form">
                         <div class="form-group">
@@ -224,7 +223,6 @@
                     </form>
                     <div id="faultMessage" class="fault-message" style="margin-bottom: 15px;text-align: left">&nbsp</div>
                 </div>
-            </div>
 
         </div>
 

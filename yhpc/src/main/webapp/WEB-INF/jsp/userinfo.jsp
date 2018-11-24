@@ -52,9 +52,9 @@
     </div>
 </div>
 
-<div class="container" >
+<div class="wrapper">
     <div class="row row-offcanvas row-offcanvas-left">
-        <div class="col-xs-6 col-sm-4 col-md-3 sidebar-offcanvas">
+        <div class="col-xs-6 col-sm-3 col-sm-offset-1 sidebar-offcanvas">
             <div class="list-group text-center">
                 <a href="#" class="list-group-item active">查看个人信息</a>
                 <a href="./editinfo" class="list-group-item">修改个人信息</a>
@@ -64,9 +64,8 @@
         <p class="pull-left visible-xs">
             <button class="btn btn-orange-sm btn-xs" data-toggle="offcanvas">菜单</button>
         </p>
-        <div class="col-xs-12 col-sm-8 col-md-9 outter-container">
+        <div class="col-xs-12 col-sm-6 outter-container">
 
-            <div class="inner-container">
                 <div class="table-form">
                     <form class="form-horizontal" id="form1">
                         <div class="form-group">
@@ -94,13 +93,13 @@
                 </div>
 
                 <div class="table-form" style="margin-top:25px">
-                    <form id="publish-form" action="./publishSubmit" method="post">
+                    <form>
                         <div class="form-group">
                             <h4 class="table-form-title">我发布的拼车信息</h4>
                         </div>
 
                         <c:if test="${!empty userinfo.travelList}">
-                            <table id="sss" class="table table-hover">
+                            <table class="table table-hover" >
                                 <thead>
                                     <tr>
                                         <th class="col-xs-4">出发</th>
@@ -126,7 +125,6 @@
                         </c:if>
                     </form>
                 </div>
-            </div>
         </div>
     </div>
 </div>

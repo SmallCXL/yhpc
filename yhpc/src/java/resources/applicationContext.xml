@@ -30,6 +30,5 @@
     </bean>
     <!--配置基于注解的事务管理器-->
     <tx:annotation-driven transaction-manager="transactionManager"/>
-    <!--<bean id="startUpService" class="com.arthur.service.imp.StartUpService"/>-->
 
 </beans>

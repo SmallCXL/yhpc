@@ -12,7 +12,7 @@
         var _form = $('#login-form');
         var _faultMessage = $('#faultMessage');
         var phone_reg = /^[1][3456789][0-9]{9}$/;
-        var password_reg = /^\w{6,20}$/;
+        var password_reg = /^\w{1,20}$/;
 
         function validateForm() {
             if (_phoneNumber.val()==="" || _password.val()==="") {

@@ -37,7 +37,6 @@
     </bean>
     <bean id="defaultExceptionHandler" class="com.arthur.web.DefaultExceptionHandler"/>
 
-
     <!--启用shiro注解 -->
     <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
           depends-on="lifecycleBeanPostProcessor">

@@ -123,11 +123,11 @@
         </div>
     </div>
 
-     <div class="container info-table">
+     <div class="wrapper">
          <c:if test="${!empty travel_info_list}">
              <div class="row">
                     <c:forEach var="info" items="${travel_info_list}" varStatus="st">
-                        <div class="col-xs-12 col-sm-6 col-md-6" >
+                        <div class="col-xs-12 col-sm-6" >
                             <c:set var="info_type_class" value="${info.type_==2?'item-orange':'item-green'}"/>
                             <div class="card-item ${info_type_class}" data-toggle="modal" data-target="#${info.id}">
                                 <h5 class="text-left dark-text info-title">${info.departure_} <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span> ${info.arrival_}</h5>
@@ -201,10 +201,10 @@
              </div>
          </c:if>
          <c:if test="${empty travel_info_list}">
-             <div class="row" style="margin-top: 6%">
+             <div class="row" style="margin-top: 15px">
                  <h3 class="orange-text text-center shadow-text">暂无出行信息</h3>
              </div>
-             <div class="row" style="margin-top: 15px;margin-bottom: 6%">
+             <div class="row" style="margin-top: 15px">
                  <a href="./home"><h5 class="dark-text text-center">返回首页</h5></a>
              </div>
          </c:if>

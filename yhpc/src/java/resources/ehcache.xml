@@ -2,12 +2,43 @@
          xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd">
 
     <diskStore path="${webapp.root}"/>
+    <!--automatic-->
+    <!--<cacheManagerPeerProviderFactory-->
+            <!--class="net.sf.ehcache.distribution.RMICacheManagerPeerProviderFactory"-->
+            <!--properties="peerDiscovery=automatic, multicastGroupAddress=230.0.0.1,-->
+                        <!--multicastGroupPort=4446, timeToLive=32"/>-->
+    <!--<cacheManagerPeerListenerFactory class="net.sf.ehcache.distribution.RMICacheManagerPeerListenerFactory"-->
+                                      <!--properties="hostName=127.0.0.1,port=40001,socketTimeoutMillis=600000"/>-->
+    <!--manual-->
+    <!-- 8081 -->
+    <!--<cacheManagerPeerProviderFactory-->
+            <!--class="net.sf.ehcache.distribution.RMICacheManagerPeerProviderFactory"-->
+            <!--properties="peerDiscovery=manual,-->
+            <!--rmiUrls=//172.18.28.96:40080/webCache|//172.18.28.96:40080/authenticationCache|-->
+            <!--//172.18.28.96:40080/shiro-activeSessionCache|//172.18.28.96:40080/loginRetryCache"/>-->
+    <!--<cacheManagerPeerListenerFactory-->
+            <!--class="net.sf.ehcache.distribution.RMICacheManagerPeerListenerFactory"-->
+            <!--properties="hostName=172.18.28.96, port=40081,socketTimeoutMillis=600000"/>-->
+
+     <!--8080-->
     <cacheManagerPeerProviderFactory
             class="net.sf.ehcache.distribution.RMICacheManagerPeerProviderFactory"
-            properties="peerDiscovery=automatic, multicastGroupAddress=230.0.0.1,
-                        multicastGroupPort=4446, timeToLive=32"/>
-    <cacheManagerPeerListenerFactory class="net.sf.ehcache.distribution.RMICacheManagerPeerListenerFactory"
-                                      properties="hostName=127.0.0.1,port=40000,socketTimeoutMillis=600000"/>
+            properties="peerDiscovery=manual,
+            rmiUrls=//172.18.28.96:40081/webCache|//172.18.28.96:40081/authenticationCache|
+            //172.18.28.96:40081/shiro-activeSessionCache|//172.18.28.96:40081/loginRetryCache"/>
+    <cacheManagerPeerListenerFactory
+            class="net.sf.ehcache.distribution.RMICacheManagerPeerListenerFactory"
+            properties="hostName=172.18.28.96, port=40080,socketTimeoutMillis=600000"/>
+
+    <!--local-->
+    <!--<cacheManagerPeerProviderFactory-->
+            <!--class="net.sf.ehcache.distribution.RMICacheManagerPeerProviderFactory"-->
+            <!--properties="peerDiscovery=manual,-->
+            <!--rmiUrls=//192.168.189.170:40081/webCache|//192.168.189.170:40081/authenticationCache|-->
+            <!--//192.168.189.170:40081/shiro-activeSessionCache|//192.168.189.170:40081/loginRetryCache"/>-->
+    <!--<cacheManagerPeerListenerFactory-->
+            <!--class="net.sf.ehcache.distribution.RMICacheManagerPeerListenerFactory"-->
+            <!--properties="hostName=192.168.189.170, port=40080,socketTimeoutMillis=600000"/>-->
     <!-- 默认缓存配置 -->
     <defaultCache
             maxEntriesLocalHeap="100"

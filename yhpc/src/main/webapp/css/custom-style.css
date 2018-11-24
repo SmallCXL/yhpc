@@ -31,6 +31,9 @@ body{
     color:var(--dark_base);
     background-color: var(--light_base);
     overflow-x: hidden;
+    min-height:100%;
+    min-width:100%;
+    position:absolute;
 }
 
 .navbar-black{
@@ -185,12 +188,8 @@ body{
     border-color: #ddd;
 }
 
-.info-table{
-    padding: 40px 15px 30px 15px;
-}
-
 .table-form{
-    padding:20px 20px 5px 20px;
+    padding:15px 20px 5px 20px;
     background-color:var(--white);
     border-radius:5px;
     height:auto;
@@ -382,18 +381,12 @@ body{
 }
 
 .sidebar-offcanvas{
-    margin-top:15px;
-    padding: 0 15px 0 15px;
+    padding: 0 10px 0 10px;
 }
 .outter-container{
     z-index: 0;
     background-color:var(--white);
-    margin: 5px 0 5px 0;
 }
-.inner-container{
-    padding:10px;
-}
-
 
 .list-group-item.active,
 .list-group-item.active:hover,
@@ -429,38 +422,29 @@ button.list-group-item.active {
     text-align: center;
     margin-top:15px;
 }
-td{
-    font-size: 14px;
-}
-tr{
-    cursor: pointer;
-    -ms-touch-action: manipulation;
-    touch-action: manipulation;
-}
 
 .footer{
-    z-index: 4;
-    padding:50px 8% 30px 8%;
-    height: auto;
+    z-index: 2;
+    height:160px;
+    width:100%;
+    padding:30px 8% 30px 8%;
     color:var(--white);
     background-color:var(--dark_base);
     box-shadow: 0 -1px 4px var(--shadow);
+    position:absolute;
+    bottom:40px;
+    left:0;
 }
 
 .footer-header{
     padding-bottom:5px;
     border-bottom:solid 1px var(--c_orange);
 }
-/*.label-white{*/
-    /*margin:2px;*/
-    /*background-color:var(--dark_base);*/
-    /*border:solid 1px var(--dark_base3)*/
-/*}*/
-/*.label-white:hover,*/
-/*.label-white:hover{*/
-    /*background-color:var(--c_orange);*/
-    /*color:var(--white);*/
-/*}*/
+.wrapper {
+    padding: 15px 15px 220px 15px;
+    width: 100%;
+    height: auto;
+}
 
 .tech-link{
     color:var(--white);
@@ -470,6 +454,12 @@ tr{
     color:var(--white);
 }
 .copy-right{
+    z-index:4;
+    position:absolute;
+    bottom:0;
+    left:0;
+    height:50px;
+    width:100%;
     padding:10px 0 10px 0;
     background-color:var(--dark_base3);
     text-align:center;
@@ -484,5 +474,17 @@ tr{
 .btn-small-dark:hover{
     background-color:var(--c_orange);
     color:var(--white);
+}
+table{
+    word-wrap:break-word;
+    word-break:break-all;
+}
+td{
+    font-size: 14px;
+}
+tr{
+    cursor: pointer;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
 }
 

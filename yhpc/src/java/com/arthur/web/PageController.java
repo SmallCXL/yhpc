@@ -168,9 +168,9 @@ public class PageController {
         return "loginFailure";
     }
 
-    @RequestMapping("/admin")
-    public String adminTest() {
-        System.out.println("enter admin url");
-        return "adminInfo";
-    }
+//    @RequestMapping("/admin")
+//    public String adminTest() {
+//        System.out.println("enter admin url");
+//        return "adminInfo";
+//    }
 }
